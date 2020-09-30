@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_financeiro_walterModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="db_financeiro_walterModelStoreContainer">
+    <EntitySet Name="tb_banco" EntityType="db_financeiro_walterModel.Store.tb_banco" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_categoria" EntityType="db_financeiro_walterModel.Store.tb_categoria" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_conta" EntityType="db_financeiro_walterModel.Store.tb_conta" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_empresa" EntityType="db_financeiro_walterModel.Store.tb_empresa" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_endereco" EntityType="db_financeiro_walterModel.Store.tb_endereco" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_movimento" EntityType="db_financeiro_walterModel.Store.tb_movimento" store:Type="Tables" Schema="db_financeiro_walter" />
+    <EntitySet Name="tb_usuario" EntityType="db_financeiro_walterModel.Store.tb_usuario" store:Type="Tables" Schema="db_financeiro_walter" />
+    <AssociationSet Name="fk_tb_banco_tb_usuario1" Association="db_financeiro_walterModel.Store.fk_tb_banco_tb_usuario1">
+      <End Role="tb_usuario" EntitySet="tb_usuario" />
+      <End Role="tb_banco" EntitySet="tb_banco" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_categoria_tb_usuario" Association="db_financeiro_walterModel.Store.fk_tb_categoria_tb_usuario">
+      <End Role="tb_usuario" EntitySet="tb_usuario" />
+      <End Role="tb_categoria" EntitySet="tb_categoria" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_conta_tb_banco1" Association="db_financeiro_walterModel.Store.fk_tb_conta_tb_banco1">
+      <End Role="tb_banco" EntitySet="tb_banco" />
+      <End Role="tb_conta" EntitySet="tb_conta" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_conta_tb_usuario1" Association="db_financeiro_walterModel.Store.fk_tb_conta_tb_usuario1">
+      <End Role="tb_usuario" EntitySet="tb_usuario" />
+      <End Role="tb_conta" EntitySet="tb_conta" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_empresa_tb_usuario1" Association="db_financeiro_walterModel.Store.fk_tb_empresa_tb_usuario1">
+      <End Role="tb_usuario" EntitySet="tb_usuario" />
+      <End Role="tb_empresa" EntitySet="tb_empresa" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_endereco_tb_banco1" Association="db_financeiro_walterModel.Store.fk_tb_endereco_tb_banco1">
+      <End Role="tb_banco" EntitySet="tb_banco" />
+      <End Role="tb_endereco" EntitySet="tb_endereco" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_endereco_tb_empresa1" Association="db_financeiro_walterModel.Store.fk_tb_endereco_tb_empresa1">
+      <End Role="tb_empresa" EntitySet="tb_empresa" />
+      <End Role="tb_endereco" EntitySet="tb_endereco" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_movimento_tb_categoria1" Association="db_financeiro_walterModel.Store.fk_tb_movimento_tb_categoria1">
+      <End Role="tb_categoria" EntitySet="tb_categoria" />
+      <End Role="tb_movimento" EntitySet="tb_movimento" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_movimento_tb_conta1" Association="db_financeiro_walterModel.Store.fk_tb_movimento_tb_conta1">
+      <End Role="tb_conta" EntitySet="tb_conta" />
+      <End Role="tb_movimento" EntitySet="tb_movimento" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_movimento_tb_empresa1" Association="db_financeiro_walterModel.Store.fk_tb_movimento_tb_empresa1">
+      <End Role="tb_empresa" EntitySet="tb_empresa" />
+      <End Role="tb_movimento" EntitySet="tb_movimento" />
+    </AssociationSet>
+    <AssociationSet Name="fk_tb_movimento_tb_usuario1" Association="db_financeiro_walterModel.Store.fk_tb_movimento_tb_usuario1">
+      <End Role="tb_usuario" EntitySet="tb_usuario" />
+      <End Role="tb_movimento" EntitySet="tb_movimento" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="tb_banco">
+    <Key>
+      <PropertyRef Name="cod_banco" />
+    </Key>
+    <Property Name="cod_banco" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nome_banco" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="site_banco" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="cod_usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_categoria">
+    <Key>
+      <PropertyRef Name="cod_categoria" />
+    </Key>
+    <Property Name="cod_categoria" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nome_categoria" Type="varchar" Nullable="false" MaxLength="45" />
+    <Property Name="cod_usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_conta">
+    <Key>
+      <PropertyRef Name="cod_conta" />
+    </Key>
+    <Property Name="cod_conta" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="numero_conta" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="saldo_conta" Type="decimal" Nullable="false" Scale="2" />
+    <Property Name="status_conta" Type="bit" Nullable="false" />
+    <Property Name="cod_banco" Type="int" Nullable="false" />
+    <Property Name="cod_usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_empresa">
+    <Key>
+      <PropertyRef Name="cod_empresa" />
+    </Key>
+    <Property Name="cod_empresa" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nome_empresa" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="cod_usuario" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_endereco">
+    <Key>
+      <PropertyRef Name="cod_endereco" />
+    </Key>
+    <Property Name="cod_endereco" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="endereco" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="telefone" Type="varchar" Nullable="false" MaxLength="11" />
+    <Property Name="cod_empresa" Type="int" />
+    <Property Name="cod_banco" Type="int" />
+  </EntityType>
+  <EntityType Name="tb_movimento">
+    <Key>
+      <PropertyRef Name="cod_movimento" />
+    </Key>
+    <Property Name="cod_movimento" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="data_movimento" Type="date" Nullable="false" />
+    <Property Name="valor_movimento" Type="decimal" Nullable="false" Scale="2" />
+    <Property Name="obs_movimento" Type="varchar" MaxLength="100" />
+    <Property Name="tipo_movimento" Type="smallint" Nullable="false" />
+    <Property Name="cod_usuario" Type="int" Nullable="false" />
+    <Property Name="cod_categoria" Type="int" Nullable="false" />
+    <Property Name="cod_conta" Type="int" />
+    <Property Name="cod_empresa" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_usuario">
+    <Key>
+      <PropertyRef Name="cod_usuario" />
+    </Key>
+    <Property Name="cod_usuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nome_usuario" Type="varchar" Nullable="false" MaxLength="80" />
+    <Property Name="email_usuario" Type="varchar" Nullable="false" MaxLength="60" />
+    <Property Name="senha_usuario" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="status_usuario" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_tb_banco_tb_usuario1">
+    <End Role="tb_usuario" Type="db_financeiro_walterModel.Store.tb_usuario" Multiplicity="1" />
+    <End Role="tb_banco" Type="db_financeiro_walterModel.Store.tb_banco" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_usuario">
+        <PropertyRef Name="cod_usuario" />
+      </Principal>
+      <Dependent Role="tb_banco">
+        <PropertyRef Name="cod_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_categoria_tb_usuario">
+    <End Role="tb_usuario" Type="db_financeiro_walterModel.Store.tb_usuario" Multiplicity="1" />
+    <End Role="tb_categoria" Type="db_financeiro_walterModel.Store.tb_categoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_usuario">
+        <PropertyRef Name="cod_usuario" />
+      </Principal>
+      <Dependent Role="tb_categoria">
+        <PropertyRef Name="cod_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_conta_tb_banco1">
+    <End Role="tb_banco" Type="db_financeiro_walterModel.Store.tb_banco" Multiplicity="1" />
+    <End Role="tb_conta" Type="db_financeiro_walterModel.Store.tb_conta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_banco">
+        <PropertyRef Name="cod_banco" />
+      </Principal>
+      <Dependent Role="tb_conta">
+        <PropertyRef Name="cod_banco" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_conta_tb_usuario1">
+    <End Role="tb_usuario" Type="db_financeiro_walterModel.Store.tb_usuario" Multiplicity="1" />
+    <End Role="tb_conta" Type="db_financeiro_walterModel.Store.tb_conta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_usuario">
+        <PropertyRef Name="cod_usuario" />
+      </Principal>
+      <Dependent Role="tb_conta">
+        <PropertyRef Name="cod_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_empresa_tb_usuario1">
+    <End Role="tb_usuario" Type="db_financeiro_walterModel.Store.tb_usuario" Multiplicity="1" />
+    <End Role="tb_empresa" Type="db_financeiro_walterModel.Store.tb_empresa" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_usuario">
+        <PropertyRef Name="cod_usuario" />
+      </Principal>
+      <Dependent Role="tb_empresa">
+        <PropertyRef Name="cod_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_endereco_tb_banco1">
+    <End Role="tb_banco" Type="db_financeiro_walterModel.Store.tb_banco" Multiplicity="0..1" />
+    <End Role="tb_endereco" Type="db_financeiro_walterModel.Store.tb_endereco" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_banco">
+        <PropertyRef Name="cod_banco" />
+      </Principal>
+      <Dependent Role="tb_endereco">
+        <PropertyRef Name="cod_banco" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_endereco_tb_empresa1">
+    <End Role="tb_empresa" Type="db_financeiro_walterModel.Store.tb_empresa" Multiplicity="0..1" />
+    <End Role="tb_endereco" Type="db_financeiro_walterModel.Store.tb_endereco" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_empresa">
+        <PropertyRef Name="cod_empresa" />
+      </Principal>
+      <Dependent Role="tb_endereco">
+        <PropertyRef Name="cod_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_movimento_tb_categoria1">
+    <End Role="tb_categoria" Type="db_financeiro_walterModel.Store.tb_categoria" Multiplicity="1" />
+    <End Role="tb_movimento" Type="db_financeiro_walterModel.Store.tb_movimento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_categoria">
+        <PropertyRef Name="cod_categoria" />
+      </Principal>
+      <Dependent Role="tb_movimento">
+        <PropertyRef Name="cod_categoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_movimento_tb_conta1">
+    <End Role="tb_conta" Type="db_financeiro_walterModel.Store.tb_conta" Multiplicity="0..1" />
+    <End Role="tb_movimento" Type="db_financeiro_walterModel.Store.tb_movimento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_conta">
+        <PropertyRef Name="cod_conta" />
+      </Principal>
+      <Dependent Role="tb_movimento">
+        <PropertyRef Name="cod_conta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_movimento_tb_empresa1">
+    <End Role="tb_empresa" Type="db_financeiro_walterModel.Store.tb_empresa" Multiplicity="1" />
+    <End Role="tb_movimento" Type="db_financeiro_walterModel.Store.tb_movimento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_empresa">
+        <PropertyRef Name="cod_empresa" />
+      </Principal>
+      <Dependent Role="tb_movimento">
+        <PropertyRef Name="cod_empresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_tb_movimento_tb_usuario1">
+    <End Role="tb_usuario" Type="db_financeiro_walterModel.Store.tb_usuario" Multiplicity="1" />
+    <End Role="tb_movimento" Type="db_financeiro_walterModel.Store.tb_movimento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_usuario">
+        <PropertyRef Name="cod_usuario" />
+      </Principal>
+      <Dependent Role="tb_movimento">
+        <PropertyRef Name="cod_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Banco";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Banco</h2>
+
+
+@{
+    
+    if( ViewBag.Validar !=null)
+    {
+        int valor =  Convert.ToInt32(ViewBag.Validar);
+
+        if(valor == 1)
+        {
+            <div class="alert alert-success">
+                 Dados Gravados com suceso
+            </div>        
+        }
+        else if(valor==0)
+        {     
+            <div class="alert alert-warning">
+                Preencher o(s) campo(s) obrigatório(s).
+            </div>
+        }
+        else if(valor ==-1)
+        {
+            <div class="alert alert-danger">
+                Ocorreu um erro na operação
+            </div>
+        }
+    }
+}
+
+
+@using (Html.BeginForm("GravarBanco", "Banco", FormMethod.Post))
+{ 
+    <div class="form-group">
+        <input type="hidden" name="cod_banco" value="@ViewBag.CodigoBanco"/>
+        <label>*Nome da Banco</label>
+        <input class="form-control" maxlength="45" name="nome_banco" id="nome_banco" value="@ViewBag.NomeBanco"/>
+        <br />
+        <label>*Endereco</label>
+        <input class="form-control" maxlength="100" name="endereco" id="endereco" value="@ViewBag.Endereco"/>
+        <br />
+        <label>*Telefone</label>
+        <input class="form-control" maxlength="11" name="telefone" id="telefone" value="@ViewBag.Telefone"/>
+        <br />
+        <label>*Site do Banco</label>
+        <input class="form-control" maxlength="50" name="site_banco" id="site_banco" value="@ViewBag.SiteBanco"/>
+        <br />
+        <button type="submit" class="btn btn-primary", name="btn_salvar", id="btn_salvar">Salvar</button>
+        <button type="submit" class="btn btn-default", name="btn_cancel", id="btn_cancel">Cancelar</button>       
+    </div>
+
+}
+
+@{if (ViewBag.ListaBanco != null)
+  {
+    <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Bancos Cadastrados
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome do Banco</th>
+                                            <th>Endereço</th>
+                                            <th>Telefone</th>
+                                            <th>Site do Banco</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.ListaBanco)
+                                        {
+                                            using(Html.BeginForm("AlterarBanco","Banco", FormMethod.Post))
+                                            {
+                                                <tr class="odd gradeX">
+                                                    <td>@item.NomeBanco</td>
+                                                    <td>@item.Endereco</td>
+                                                    <td>@item.Telefone</td>
+                                                    <td>@item.SiteBanco</td>
+                                                    <td>
+                                                        <center><button type="submit" name="btn_alterar">Alterar</Button></center>
+                                                        <input type="hidden" name="nome_banco" value="@item.NomeBanco" />
+                                                        <input type="hidden" name="cod_banco" value="@item.CodigoBanco" />
+                                                        <input type="hidden" name="endereco" value="@item.Endereco" />
+                                                        <input type="hidden" name="telefone" value="@item.Telefone" />
+                                                        <input type="hidden" name="site_banco" value="@item.SiteBanco" />
+                                                    </td>
+                                                </tr>
+                                            }                                            
+                                        }
+                                                                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+  }     
+}
+
+<script>
+
+    $("#btn_salvar").click(function () {
+
+        var validar = 1;
+
+        if ($('#nome_banco').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O NOME DO BANCO");
+            return false;
+        }
+
+        if ($('#endereco').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O ENDERECO DO BANCO");
+            return false;
+        }
+
+        if ($('#telefone').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O TELEFONE DO BANCO");
+            return false;
+        }
+
+        if ($('#site_banco').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O SITE DO BANCO");
+            return false;
+        }
+
+    })

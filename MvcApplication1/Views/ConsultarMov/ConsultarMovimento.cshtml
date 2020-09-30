@@ -1,0 +1,182 @@
+﻿@{
+    ViewBag.Title = "ConsultarMovimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Consultar Movimento</h2>
+
+@{
+    
+    if (ViewBag.Validar != null)
+    {
+        int valor = Convert.ToInt32(ViewBag.Validar);
+
+        if (valor == 0)
+        {     
+            <div class="alert alert-warning">
+                Preencher o(s) campo(s) obrigatório(s).
+            </div>
+        }
+        else if (valor == -1)
+        {
+            <div class="alert alert-danger">
+                Ocorreu um erro na operação
+            </div>
+        }
+    }
+}
+
+@using (Html.BeginForm("RealizarConsulta", "ConsultarMov", FormMethod.Post))
+{ 
+    <div class="form-group">
+        <input type="hidden" name="cod_Movimento"  value=""/>
+
+        <label>Tipo do Movimento:</label>
+        <select class="form-control" name="tipo_movimento" id="tipo_movimento" >
+            @if (ViewBag.TipoMovimento != null &&  ViewBag.TipoMovimento != string.Empty)
+            {
+                if (ViewBag.TipoMovimento == "1")
+                { 
+                    <option value="">Todos</option>
+                    <option value="1" selected="selected">Entrada</option>
+                    <option value="2">Saída</option>
+                }
+                else if(ViewBag.TipoMovimento == "2")
+                {
+                   <option value="" >Todos</option>
+                   <option value="1">Entrada</option>
+                   <option value="2" selected="selected">Saída</option>
+                }
+            }else
+            {
+                <option value="" selected="selected">Todos</option>
+                <option value="1">Entrada</option>
+                <option value="2">Saída</option>
+            }
+        </select> 
+        <br />
+
+        <label>Categoria:</label>
+        <select class="form-control" name="cod_categoria" id="cod_categoria"> 
+            @{
+            if (ViewBag.ListaCategoria != null)
+            {
+                    <option value="" selected="selected">Todas</option> 
+                foreach (var item in ViewBag.ListaCategoria)
+                {
+                    if (ViewBag.CodigoCategoria != null)
+                    {
+
+                        if (ViewBag.CodigoCategoria == item.cod_categoria.ToString())
+                        {
+                            <option selected="selected" value="@item.cod_categoria">@item.nome_categoria</option>
+                        }
+                        else
+                        {
+                            <option value="@item.cod_categoria">@item.nome_categoria</option> 
+                        }
+                    }
+                    else
+                    {
+                        <option value="@item.cod_categoria">@item.nome_categoria</option>
+                    }
+                       
+                }
+            }
+            else
+            {
+                    <option value="" selected="selected">Nenhuma categoria cadastrada</option> 
+            }  
+                   
+             }
+        </select>
+        <br />
+
+        <label>*Data de Entrada</label>
+        <input class="form-control" maxlength="20" name="data_entrada" id="data_entrada" value="@ViewBag.DataEntrada"/>
+        <br />
+
+        <label>*Data de Saída</label>
+        <input class="form-control" maxlength="20" name="data_saida" id="data_saida" value="@ViewBag.DataSaida"/>
+        <br />
+
+        <br />
+        <button type="submit" class="btn btn-primary" name="btn_consultar" id="btn_consultar">Consultar</button>
+
+        </div>
+}
+
+
+@{if (ViewBag.ListaMovimento != null && ViewBag.ListaMovimento.Count > 0)
+  {
+    <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Resultado da Pesquisa
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo</th>
+                                            <th>Data</th>
+                                            <th>Valor</th>
+                                            <th>Conta</th>
+                                            <th>Categoria</th>
+                                            <th>Empresa</th>
+                                            <th>Observação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.ListaMovimento)
+                                        {
+                                                <tr class="odd gradeX">
+                                                    <td>@item.TipoMovimento</td>
+                                                    <td>@item.DataMovimento</td>
+                                                    <td>@item.ValorMovimento</td>
+                                                    <td>@item.NumeroConta</td>
+                                                    <td>@item.NomeCategoria</td>
+                                                    <td>@item.NomeEmpresa</td>
+                                                    <td>@item.ObsMovimento</td>                                                    
+                                                </tr>                                           
+                                        }
+                                                                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+  }     
+}
+
+
+
+<script>
+
+    $("#btn_consultar").click(function () {
+
+        var validar = 1;
+
+        if ($('#data_entrada').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER A DATA DE ENTRADA");
+            return false;
+        }
+
+        if ($('#data_saida').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER A DATA DE SAÍDA");
+            return false;
+        }
+
+    })
+
+ </script>

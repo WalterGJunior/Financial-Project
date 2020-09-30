@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "Conta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Conta</h2>
+
+
+@{
+    
+    if (ViewBag.Validar != null)
+    {
+        int valor = Convert.ToInt32(ViewBag.Validar);
+
+        if (valor == 1)
+        {
+            <div class="alert alert-success">
+                 Dados Gravados com suceso
+            </div>        
+        }
+        else if (valor == 0)
+        {     
+            <div class="alert alert-warning">
+                Preencher o(s) campo(s) obrigatório(s).
+            </div>
+        }
+        else if (valor == -1)
+        {
+            <div class="alert alert-danger">
+                Ocorreu um erro na operação
+            </div>
+        }
+    }
+}
+
+
+@using (Html.BeginForm("GravarConta", "Conta", FormMethod.Post))
+{ 
+    <div class="form-group">
+        <input type="hidden" name="cod_conta"  value="@ViewBag.CodigoConta"/>
+        <label>*Número da conta</label>
+        <input class="form-control" maxlength="20" name="numero_conta" id="numero_conta" value="@ViewBag.NumeroConta"/>
+        <br />
+        <label>*Saldo:</label>
+        <input class="form-control" maxlength="10" name="saldo_conta" id="saldo_conta" value="@ViewBag.SaldoConta"/>
+        <br />
+        <label>Status:</label>
+        <select class="form-control" name="status_conta" id="status_conta">
+
+            @if(ViewBag.StatusConta != null){
+
+                if (ViewBag.StatusConta == "True")
+                {
+                    <option value="true" selected="selected">Ativo</option>
+                    <option value="false">Inativo</option>
+                }
+                else
+                {
+                    <option value="true" >Ativo</option>
+                    <option value="false" selected="selected">Inativo</option>
+                }
+            }
+            else
+            {
+                <option value="true" selected="selected">Ativo</option>
+                <option value="false">Inativo</option>
+            }
+              </select>
+        <br />
+        <label>Banco:</label>
+        <select class="form-control" name="cod_banco" id="cod_banco">
+            @{
+            if (ViewBag.ListaBanco != null)
+            {
+                <option value="" selected="selected">Selecione</option> 
+                foreach (var item in ViewBag.ListaBanco)
+                {
+                    if (ViewBag.CodigoBanco != null)
+                    {
+
+                        if (ViewBag.CodigoBanco == item.CodigoBanco.ToString())
+                        {
+                            <option selected="selected" value="@item.CodigoBanco">@item.NomeBanco</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CodigoBanco">@item.NomeBanco</option> 
+                        }
+                    }
+                    else
+                    {
+                        <option value="@item.CodigoBanco">@item.NomeBanco</option>
+                    }
+                       
+                }
+            }
+            else
+            {
+                    <option value="" selected="selected">Nenhum banco cadastrado</option> 
+            }  
+                   
+             }
+                  
+        </select>
+        <br />
+        <button type="submit" class="btn btn-primary", name="btn_salvar", id="btn_salvar">Salvar</button>
+        <button type="submit" class="btn btn-default", name="btn_cancel", id="btn_cancel">Cancelar</button>
+       
+    </div>   
+}
+
+
+@{if (ViewBag.ListaConta != null && ViewBag.ListaConta.Count > 0)
+  {
+    <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Contas Cadastradas
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Número da conta</th>
+                                            <th>Saldo</th>
+                                            <th>Status</th>
+                                            <th>Banco</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.ListaConta)
+                                        {
+                                            using (Html.BeginForm("AlterarConta", "Conta", FormMethod.Post))
+                                            {
+                                                <tr class="odd gradeX">
+                                                    <td>@item.NumeroConta</td>
+
+                                                    <td>@item.SaldoConta</td>
+                                                    <td>
+                                                        @{
+                                                            string situacao = string.Empty;
+
+                                                            if (item.StatusConta == true)
+                                                            {
+                                                                situacao = "Ativa";
+                                                            }
+                                                            else
+                                                            {
+                                                                situacao = "Inativa";
+                                                            }
+                                                            @situacao;
+                                                            
+                                                         }
+                                                        
+                                                    </td>
+                                                    <td>@item.NomeBanco</td>
+                                                    <td>
+                                                        <center><button type="submit" name="btn_alterar">Alterar</Button></center>
+                                                        <input type="hidden" name="NumeroConta" value="@item.NumeroConta" />
+                                                        <input type="hidden" name="CodigoConta" value="@item.CodigoConta" />
+                                                        <input type="hidden" name="SaldoConta" value="@item.SaldoConta" />
+                                                        <input type="hidden" name="StatusConta" value="@item.StatusConta.ToString()" />
+                                                        <input type="hidden" name="CodigoBanco" value="@item.CodigoBanco" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                                                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+  }     
+}
+
+
+<script>
+
+    $("#btn_salvar").click(function () {
+
+        var validar = 1;
+
+        if ($('#numero_conta').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O NÚMERO DA CONTA");
+            return false;
+        }
+
+        if ($('#saldo_conta').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O SALDO DA CONTA");
+            return false;
+        }
+
+        if ($('#cod_banco').val().trim() == '') {
+            validar = 0;
+            alert("SELECIONE O NOME DO BANCO");
+            return false;
+        }
+
+
+    })
+
+ </script>

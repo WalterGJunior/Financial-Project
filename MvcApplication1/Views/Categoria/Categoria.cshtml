@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Categoria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Categoria</h2>
+
+@{
+    
+    if (ViewBag.Validar != null)
+    {
+        int valor = Convert.ToInt32(ViewBag.Validar);
+
+        if (valor == 1)
+        {
+            <div class="alert alert-success">
+                 Dados Gravados com suceso
+            </div>        
+        }
+        else if (valor == 0)
+        {     
+            <div class="alert alert-warning">
+                Preencher o(s) campo(s) obrigatório(s).
+            </div>
+        }
+        else if (valor == -1)
+        {
+            <div class="alert alert-danger">
+                Ocorreu um erro na operação
+            </div>
+        }
+    }
+}
+
+
+@using (Html.BeginForm("GravarCategoria", "Categoria", FormMethod.Post))
+{ 
+    <div class="form-group">
+        <input type="hidden" name="cod_categoria"  value="@ViewBag.Codigocategoria"/>
+        <label>*Nome da Categoria</label>
+        <input class="form-control" maxlength="45" name="nome_categoria" id="nome_categoria" value="@ViewBag.NomeCategoria"/>
+        <br />
+        <button type="submit" class="btn btn-primary", name="btn_salvar", id="btn_salvar">Salvar</button>
+        <button type="submit" class="btn btn-default", name="btn_cancel", id="btn_cancel">Cancelar</button>
+       
+    </div>   
+}
+
+@{if (ViewBag.ListaCategoria != null)
+  {
+    <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Categorias Cadastradas
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome da Categoria</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.ListaCategoria)
+                                        {
+                                            using(Html.BeginForm("AlterarCategoria","Categoria", FormMethod.Post))
+                                            {
+                                                <tr class="odd gradeX">
+                                                    <td>@item.nome_categoria</td>
+                                                    <td>
+                                                        <center><button type="submit" name="btn_alterar">Alterar</Button></center>
+                                                        <input type="hidden" name="nome_categoria" value="@item.nome_categoria" />
+                                                        <input type="hidden" name="cod_categoria" value="@item.cod_categoria" />
+                                                    </td>
+                                                </tr>
+                                            }                                            
+                                        }
+                                                                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+  }     
+}
+
+
+<script>
+
+    $("#btn_salvar").click(function () {
+
+        var validar = 1;
+
+        if ($('#nome_categoria').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O NOME DA CATEGORIA");
+            return false;
+        }
+
+    })
+
+</script>

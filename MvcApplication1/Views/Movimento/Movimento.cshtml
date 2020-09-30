@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "Movimento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movimento</h2>
+
+
+@{
+    
+    if (ViewBag.Validar != null)
+    {
+        int valor = Convert.ToInt32(ViewBag.Validar);
+
+        if (valor == 1)
+        {
+            <div class="alert alert-success">
+                 Dados Gravados com suceso
+            </div>        
+        }
+        else if (valor == 0)
+        {     
+            <div class="alert alert-warning">
+                Preencher o(s) campo(s) obrigatório(s).
+            </div>
+        }
+        else if (valor == -1)
+        {
+            <div class="alert alert-danger">
+                Ocorreu um erro na operação
+            </div>
+        }
+    }
+}
+
+
+@using (Html.BeginForm("GravarMovimento", "Movimento", FormMethod.Post))
+{ 
+    <div class="form-group">
+        <input type="hidden" name="cod_Movimento"  value=""/>
+
+        <label>Tipo do Movimento:</label>
+        <select class="form-control" name="tipo_movimento" id="tipo_movimento" >
+            @if (ViewBag.TipoMovimento != null)
+            {
+                if (ViewBag.TipoMovimento == 1)
+                { 
+                    <option value="">Selecione</option>
+                    <option value="1" selected="selected">Entrada</option>
+                    <option value="2">Saída</option>
+                }
+                else if(ViewBag.TipoMovimento == 2)
+                {
+                   <option value="" >Selecione</option>
+                   <option value="1">Entrada</option>
+                   <option value="2" selected="selected">Saída</option>
+                }
+            }else
+            {
+                <option value="" selected="selected">Selecione</option>
+                <option value="1">Entrada</option>
+                <option value="2">Saída</option>
+            }
+        </select> 
+        <br />
+        
+        <label>*Data do Movimento</label>
+        <input class="form-control" maxlength="20" name="data_movimento" id="data_movimento" value="@ViewBag.DataMovimento"/>
+        <br />
+        <label>*Valor do Movimento:</label>
+        <input class="form-control" maxlength="10" name="valor_movimento" id="valor_movimento" value="@ViewBag.ValorMovimento"/>
+        <br />
+        <label>Conta:</label>
+        <select class="form-control" name="cod_conta" id="cod_conta"> 
+            @{
+            if (ViewBag.ListaConta != null)
+            {
+                    <option value="" selected="selected">Selecione</option> 
+                foreach (var item in ViewBag.ListaConta)
+                {
+                    if (ViewBag.CodigoConta != null)
+                    {
+
+                        if (ViewBag.CodigoConta == item.CodigoConta.ToString())
+                        {
+                            <option selected="selected" value="@item.CodigoConta">@item.NumeroConta</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CodigoConta">@item.NumeroConta</option> 
+                        }
+                    }
+                    else
+                    {
+                        <option value="@item.CodigoConta">@item.NumeroConta</option>
+                    }
+                       
+                }
+            }
+            else
+            {
+                    <option value="" selected="selected">Nenhuma conta cadastrada</option> 
+            }  
+                   
+             }
+        </select>
+        <br />
+
+        <label>Categoria:</label>
+        <select class="form-control" name="cod_categoria" id="cod_categoria"> 
+            @{
+            if (ViewBag.ListaCategoria != null)
+            {
+                    <option value="" selected="selected">Selecione</option> 
+                foreach (var item in ViewBag.ListaCategoria)
+                {
+                    if (ViewBag.CodigoCategoria != null)
+                    {
+
+                        if (ViewBag.CodigoCategoria == item.cod_categoria.ToString())
+                        {
+                            <option selected="selected" value="@item.cod_categoria">@item.nome_categoria</option>
+                        }
+                        else
+                        {
+                            <option value="@item.cod_categoria">@item.nome_categoria</option> 
+                        }
+                    }
+                    else
+                    {
+                        <option value="@item.cod_categoria">@item.nome_categoria</option>
+                    }
+                       
+                }
+            }
+            else
+            {
+                    <option value="" selected="selected">Nenhuma categoria cadastrada</option> 
+            }  
+                   
+             }
+        </select>
+        <br />
+
+        <label>Empresa:</label>
+        <select class="form-control" name="cod_empresa" id="cod_empresa"> 
+            @{
+            if (ViewBag.ListaEmpresa != null)
+            {
+                    <option value="" selected="selected">Selecione</option> 
+                foreach (var item in ViewBag.ListaEmpresa)
+                {
+                    if (ViewBag.CodigoEmpresa != null)
+                    {
+
+                        if (ViewBag.CodigoEmpresa == item.CodigoEmpresa.ToString())
+                        {
+                            <option selected="selected" value="@item.CodigoEmpresa">@item.NomeEmpresa</option>
+                        }
+                        else
+                        {
+                            <option value="@item.CodigoEmpresa">@item.NomeEmpresa</option> 
+                        }
+                    }
+                    else
+                    {
+                        <option value="@item.CodigoEmpresa">@item.NomeEmpresa</option>
+                    }
+                       
+                }
+            }
+            else
+            {
+                    <option value="" selected="selected">Nenhuma empresa cadastrada</option> 
+            }  
+                   
+             }
+        </select>
+        <br />
+
+        <label>Observação do Movimento:</label>
+        <input class="form-control" maxlength="100" name="obs_movimento" id="obs_movimento" value="@ViewBag.ObsMovimento"/>
+        <br />
+
+        <br />
+        <button type="submit" class="btn btn-primary" name="btn_salvar" id="btn_salvar">Salvar</button>
+        <button type="submit" class="btn btn-default" name="btn_cancel" id="btn_cancel">Cancelar</button>
+
+        </div>
+}
+
+@{if (ViewBag.ListaMovimento != null && ViewBag.ListaMovimento.Count > 0)
+  {
+    <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                             Movimentos Cadastrados
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo do Movimento</th>
+                                            <th>Data do Movimento</th>
+                                            <th>Valor do Movimento</th>
+                                            <th>Conta</th>
+                                            <th>Categoria</th>
+                                            <th>Empresa</th>
+                                            <th>Observação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in ViewBag.ListaMovimento)
+                                        {
+                                            using (Html.BeginForm("AlterarMovimento", "Movimento", FormMethod.Post))
+                                            {
+                                                <tr class="odd gradeX">
+                                                    <td>@item.TipoMovimento</td>
+                                                    <td>@item.DataMovimento</td>
+                                                    <td>@item.ValorMovimento</td>
+                                                    <td>@item.CodigoConta</td>
+                                                    <td>@item.CodigoCategoria</td>
+                                                    <td>@item.CodigoEmpresa</td>
+                                                    <td>@item.ObsMovimento</td>
+                                                    <td>
+                                                        <center><button type="submit" name="btn_alterar">Alterar</Button></center>
+                                                        <input type="hidden" name="TipoMovimento" value="@item.TipoMovimento" />
+                                                        <input type="hidden" name="DataMovimento" value="@item.DataMovimento" />
+                                                        <input type="hidden" name="ValorMovimento" value="@item.ValorMovimento" />
+                                                        <input type="hidden" name="CodigoConta" value="@item.CodigoConta" />
+                                                        <input type="hidden" name="CodigoCategoria" value="@item.CodigoCategoria" />
+                                                        <input type="hidden" name="CodigoEmpresa" value="@item.CodigoEmpresa" />
+                                                        <input type="hidden" name="ObsMovimento" value="@item.ObsMovimento" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                                                               
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+  }     
+}
+
+
+<script>
+
+    $("#btn_salvar").click(function () {
+
+        var validar = 1;
+
+        if ($('#data_movimento').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER A DATA DO MOVIMENTO");
+            return false;
+        }
+
+        if ($('#valor_movimento').val().trim() == '') {
+            validar = 0;
+            alert("PREENCHER O VALOR DO MOVIMENTO");
+            return false;
+        }
+
+    })
+
+ </script>
